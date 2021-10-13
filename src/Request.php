@@ -13,10 +13,10 @@ class Request extends SymfonyRequest
      * Get the request url
      * @return string
      */
-    public function url()
+    public static function url()
     {
 
-        return rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/');
+        return rtrim(preg_replace('/\?.*/', '', (new self)->getUri()), '/');
     }
 
     /**
