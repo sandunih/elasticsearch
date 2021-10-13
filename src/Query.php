@@ -1004,9 +1004,14 @@ class Query
      * @param null $page
      * @return Pagination
      */
-    public function paginate($per_page = 10, $page_name = "page", $page = null)
+    public function paginate($per_page = 10, $page_name = "page", $page = null, array $options = [])
     {
 
+        $defaultOptions = ['path','query'];
+
+        foreach ($options as $key => $value) {
+            $defaultOptions[$key] = $value;
+        }
         // Check if the request from PHP CLI
         if(php_sapi_name() == "cli"){
             $this->take($per_page);
@@ -1024,7 +1029,7 @@ class Query
 
         $objects = $this->get();
 
-        return new Pagination($objects, $objects->total, $per_page, $page, ['path' => Request::url(), 'query' => Request::query()]);
+        return new Pagination($objects, $objects->total, $per_page, $page, ['path' =>  $defaultOptions['path']?:Request::url(), 'query' => $defaultOptions['query']?:Request::query()]);
     }
 
     /**

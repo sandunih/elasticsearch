@@ -8,6 +8,7 @@ namespace Basemkhirat\Elasticsearch;
  */
 class Request
 {
+
     /**
      * Get the request url
      * @return string
@@ -27,7 +28,7 @@ class Request
 
         $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
 
-        $host = isset($host) ? $host : $server['SERVER_ADDR'] . $port;
+        $host = isset($host) ? $host : $server['SERVER_NAME'] . $port;
 
         $host .= preg_replace("/\?.*/", "", $server["REQUEST_URI"]);
 
