@@ -2,12 +2,11 @@
 
 namespace Basemkhirat\Elasticsearch;
 
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 /**
  * Class Request
  * @package Basemkhirat\Elasticsearch
  */
-class Request extends SymfonyRequest
+class Request
 {
     /**
      * Get the request url
@@ -16,7 +15,23 @@ class Request extends SymfonyRequest
     public static function url()
     {
 
-        return rtrim(preg_replace('/\?.*/', '', (new self)->getUri()), '/');
+        $server = $_SERVER;
+
+        $ssl = (!empty($server['HTTPS']) && $server['HTTPS'] == 'on');
+
+        $sp = strtolower($server['SERVER_PROTOCOL']);
+
+        $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+
+        $port = $server['SERVER_PORT'];
+
+        $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
+
+        $host = isset($host) ? $host : $server['SERVER_ADDR'] . $port;
+
+        $host .= preg_replace("/\?.*/", "", $server["REQUEST_URI"]);
+
+        return $protocol . '://' . $host;
     }
 
     /**
