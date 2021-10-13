@@ -1007,7 +1007,7 @@ class Query
     public function paginate($per_page = 10, $page_name = "page", $page = null, array $options = [])
     {
 
-        $defaultOptions = ['path','query'];
+        $defaultOptions = ['path' =>'','query'=>''];
 
         foreach ($options as $key => $value) {
             $defaultOptions[$key] = $value;
